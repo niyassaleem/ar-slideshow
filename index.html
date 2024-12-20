@@ -1,56 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>AR Slideshow</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-</head>
-<body style="margin: 0; overflow: hidden;">
-  <a-scene embedded arjs>
-    <!-- Custom QR Code Marker -->
-    // <<a-marker type="pattern" url="https://niyassaleem.github.io/ar-slideshow/markers/qr-code-marker.patt">
-      <a-marker preset="hiro">
-      <a-entity id="slideshow" position="0 1 0">
-        <!-- Image 1 -->
-        <a-image id="image1" src="https://niyassaleem.github.io/ar-slideshow/images/achievement1.jpg" position="0 0 0"></a-image>
-        <!-- Image 2 -->
-        <a-image id="image2" src="https://niyassaleem.github.io/ar-slideshow/images/achievement2.jpg" position="0 0 0" visible="false"></a-image>
-        <!-- Image 3 -->
-        <a-image id="image3" src="images/achievement3.jpg" position="0 0 0" visible="false"></a-image>
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.3.0/dist/aframe-master.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+<style>
+  .arjs-loader {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
+<body style="margin : 0px; overflow: hidden;">
+  <!-- minimal loader shown until image descriptors are loaded -->
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: true; precision: medium;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+  >
+    <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
+    <a-nft
+      type="nft"
+      url="your-server/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/trex-image/trex"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance=".01"
+      smoothThreshold="5"
+    >
+      <a-entity
+        gltf-model="your-server/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+        scale="5 5 5"
+        position="150 300 -100"
+      >
       </a-entity>
-    </a-marker>
-    
+    </a-nft>
     <a-entity camera></a-entity>
   </a-scene>
-
-  <script>
-    // JavaScript to handle sliding through images
-    let currentImageIndex = 0;
-    const images = ['image1', 'image2', 'image3'];
-
-    // Function to show the next image
-    function showNextImage() {
-      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'false');
-      currentImageIndex = (currentImageIndex + 1) % images.length;
-      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'true');
-    }
-
-    // Function to show the previous image
-    function showPreviousImage() {
-      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'false');
-      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'true');
-    }
-
-    // Event listeners for swiping or button clicks to change images
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'ArrowRight') {
-        showNextImage();
-      }
-      if (event.key === 'ArrowLeft') {
-        showPreviousImage();
-      }
-    });
-  </script>
 </body>
-</html>
