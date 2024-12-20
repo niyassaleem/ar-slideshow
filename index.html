@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Slideshow</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene embedded arjs>
+    <!-- Custom QR Code Marker -->
+    <a-marker type="pattern" url="markers/qr-code-marker.patt">
+      <a-entity id="slideshow" position="0 1 0">
+        <!-- Image 1 -->
+        <a-image id="image1" src="images/achievement1.jpg" position="0 0 0"></a-image>
+        <!-- Image 2 -->
+        <a-image id="image2" src="images/achievement2.jpg" position="0 0 0" visible="false"></a-image>
+        <!-- Image 3 -->
+        <a-image id="image3" src="images/achievement3.jpg" position="0 0 0" visible="false"></a-image>
+      </a-entity>
+    </a-marker>
+    
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    // JavaScript to handle sliding through images
+    let currentImageIndex = 0;
+    const images = ['image1', 'image2', 'image3'];
+
+    // Function to show the next image
+    function showNextImage() {
+      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'false');
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'true');
+    }
+
+    // Function to show the previous image
+    function showPreviousImage() {
+      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'false');
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      document.getElementById(images[currentImageIndex]).setAttribute('visible', 'true');
+    }
+
+    // Event listeners for swiping or button clicks to change images
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') {
+        showNextImage();
+      }
+      if (event.key === 'ArrowLeft') {
+        showPreviousImage();
+      }
+    });
+  </script>
+</body>
+</html>
